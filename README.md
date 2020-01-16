@@ -1,50 +1,58 @@
-## Running locally
 
-Set up the project:
+
+<center> 
+  <a href="https://svelte.dev">
+	<img alt="Cybernetically enhanced web apps: Svelte" src="https://sveltejs.github.io/assets/banner.png">
+  </a>
+</center>
+
+# Svelte JS 中文文档
+Cybernetically enhanced web apps.
+
+## 简介
+
+本仓库为[Svelte英文官网](https://svelte.dev/)中文自译版本。
+
+立意是为了让中文用户能更好的学习了解Svelte。
+
+由于本人水平和精力十分有限，部分翻译可能会带来歧义，请谅解。
+
+也很欢迎广大中文用户参与到Svelte中文文档建设中。
+
+## 运行到本地
+
+设置项目：
 
 ```bash
-git clone https://github.com/sveltejs/svelte.git
-cd svelte
-npm ci
-PUBLISH=1 npm run build
-cd site
+git clone https://github.com/Runningzs/svelte-cn.git
 npm ci
 npm run update
 ```
 
-Start the server with `npm run dev`, and navigate to [localhost:3000](http://localhost:3000).
+运行：
 
-## Using a local copy of Svelte
+```bash
+ npm run dev
+ ```
+ 访问地址： [localhost:3000](http://localhost:3000)。
 
-By default, the REPL will fetch the most recent version of Svelte from https://unpkg.com/svelte. When running the site locally, you can also use your local copy of Svelte.
 
-To produce the proper browser-compatible UMD build of the compiler, you will need to run `npm run build` (or `npm run dev`) in the root of this repository with the `PUBLISH` environment variable set to any non-empty string.
+## 进度
 
-Then visit the REPL at [localhost:3000/repl?version=local](http://localhost:3000/repl?version=local). Please note that the local REPL only works with `npm run dev` and not when building the site for production usage.
+- [x] index
+- [x] tutorial 
+- [ ] API docs
 
-## REPL GitHub integration
+## 构建该站点
 
-In order for the REPL's GitHub integration to work properly when running locally, you will need to:
-- [create a GitHub OAuth app](https://github.com/settings/developers):
-   - set `Authorization callback URL` to `http://localhost:3000/auth/callback`;
-   - set `Application name` as you like, and `Homepage URL` as `http://localhost:3000/`;
-   - create the app and take note of `Client ID` and `Client Secret`
-- in this repo, create `site/.env` containing:
-   ```
-   GITHUB_CLIENT_ID=[your app's Client ID]
-   GITHUB_CLIENT_SECRET=[your app's Client Secret]
-   BASEURL=http://localhost:3000
-   ```
-## Building the site
+如要构建本站点，请使用 `npm run sapper`命令。输出文件路径 ：`__sapper__/build`。
 
-To build the website, run `npm run sapper`. The output can be found in `__sapper__/build`.
+## 运行测试
 
-## Testing
+请使用： `npm run test`.
 
-Tests can be run using `npm run test`.
+## 其他
 
-## Translating the API docs
-
-Anchors are automatically generated using headings in the documentation and by default (for the english language) they are latinised to make sure the URL is always conforming to RFC3986.
-
-If we need to translate the API documentation to a language using unicode chars, we can setup this app to export the correct anchors by setting up `SLUG_PRESERVE_UNICODE` to `true` in `config.js`.
+[Svelte官方Github仓库](https://github.com/sveltejs/svelte)。
+[源仓库地址](https://github.com/sveltejs/svelte/tree/master/site)。
+[Sapper官方Github仓库](https://github.com/sveltejs/sapper)。
