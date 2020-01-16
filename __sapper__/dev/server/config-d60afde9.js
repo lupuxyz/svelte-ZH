@@ -1,0 +1,14 @@
+'use strict';
+
+require('./index-88dc87fc.js');
+
+// REPL props
+
+const svelteUrl = `https://unpkg.com/svelte@3`;
+const rollupUrl = `https://unpkg.com/rollup@1/dist/rollup.browser.js`;
+const mapbox_setup = `window.MAPBOX_ACCESS_TOKEN = process.env.MAPBOX_ACCESS_TOKEN;`;
+
+exports.mapbox_setup = mapbox_setup;
+exports.rollupUrl = rollupUrl;
+exports.svelteUrl = svelteUrl;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY29uZmlnLWQ2MGFmZGU5LmpzIiwic291cmNlcyI6WyIuLi8uLi8uLi9zcmMvY29uZmlnLmpzIl0sInNvdXJjZXNDb250ZW50IjpbIi8vIFJFUEwgcHJvcHNcblxuZXhwb3J0IGNvbnN0IHN2ZWx0ZVVybCA9IGBodHRwczovL3VucGtnLmNvbS9zdmVsdGVAM2A7XG5leHBvcnQgY29uc3Qgcm9sbHVwVXJsID0gYGh0dHBzOi8vdW5wa2cuY29tL3JvbGx1cEAxL2Rpc3Qvcm9sbHVwLmJyb3dzZXIuanNgO1xuZXhwb3J0IGNvbnN0IG1hcGJveF9zZXR1cCA9IGB3aW5kb3cuTUFQQk9YX0FDQ0VTU19UT0tFTiA9IHByb2Nlc3MuZW52Lk1BUEJPWF9BQ0NFU1NfVE9LRU47YDtcbiJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7O0FBQUE7O0FBRUEsQUFBWSxNQUFDLFNBQVMsR0FBRyxDQUFDLDBCQUEwQixDQUFDLENBQUM7QUFDdEQsQUFBWSxNQUFDLFNBQVMsR0FBRyxDQUFDLGlEQUFpRCxDQUFDLENBQUM7QUFDN0UsQUFBWSxNQUFDLFlBQVksR0FBRyxDQUFDLDZEQUE2RCxDQUFDOzs7Ozs7In0=

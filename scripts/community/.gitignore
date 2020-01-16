@@ -1,0 +1,5 @@
+/node_modules
+__sapper__
+.backup
+.netlify
+.env

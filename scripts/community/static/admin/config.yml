@@ -1,0 +1,44 @@
+## netlify cms config
+## the rest of this is in admin/index.html
+backend:
+  name: git-gateway
+  branch: master
+  accept_roles: # accepts all users if left out
+    - admin
+    - editor
+
+publish_mode: editorial_workflow
+media_folder: "static/images/uploads" # Media files will be stored in the repo under images/uploads
+public_folder: "/images/uploads"
+
+collections:
+  - name: Events
+    label: Events # Used in the UI
+    files:
+      - name: EventsFile
+        label: EventsFile
+        file: data/events.yml
+        fields:
+          - label: Events
+            name: EventsList
+            widget: list
+            fields:
+              - {label: Event Name, name: eventName, widget: string}
+              - {label: URL, name: url, widget: string, hint: "Where people can sign up or learn more or contact Organizers e.g. https://foo.bar.com", required: false}
+              - {label: Country, name: country, widget: string, hint: "Something someone might search, e.g. USA, UK, Sweden, Singapore, Remote"}
+              - {label: City, name: city, widget: string, hint: "Something someone might search, e.g. NYC, London, Stockholm, Singapore, Remote"}
+              - label: Type
+                name: type
+                widget: select
+                options: 
+                  - {label: "Recurring Meetup", value: "Meetup"}
+                  - {label: "One-off Event", value: "One-off"}
+                  - {label: "Workshop", value: "Workshop"}
+                  - {label: "Conference", value: "Conference"}
+                  - {label: "Misc Event", value: "Misc"}
+              - {label: Twitter Handle, name: twitter, widget: string, required: false, hint: "Leave off the twitter.com e.g. @SvelteSociety"}
+              - {label: Specific Date - if applicable, name: date, default: "", widget: datetime, required: false, hint: "We may sort events by date in future. Right now it isn't really enforced, it's up to you to manage if it makes sense."}
+              - {label: Organizer Contact, name: organizer, widget: text, hint: "your name, email, twitter, any way for people to get in touch", required: false }
+              - {label: Cover Image", required: false, name: thumbnail, widget: image }
+              - {label: Short Description, name: desc, widget: string, required: false}
+              - {label: Full Description, name: description, widget: markdown, required: false, hint: "remember you can use markdown"}
