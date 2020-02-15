@@ -701,7 +701,7 @@ class:name
 ```
 
 
-#### 使用 *action*
+#### use *action*
 
 ```sv
 use:action
@@ -719,7 +719,7 @@ action = (node: HTMLElement, parameters: any) => {
 
 ---
 
-Actions作为一个方法用于标签被创建时调用。调用`destroy`函数返回表示标签被销毁。
+Action 作为一个方法用于标签被创建时调用。调用`destroy`函数返回表示标签被销毁。
 
 ```html
 <script>
@@ -741,7 +741,7 @@ Actions作为一个方法用于标签被创建时调用。调用`destroy`函数�
 
  Action 可以含有参数。如果返回的值含有`update` 方法， 在对 Svelte 标记的内容更新之后，只要`update`指定的参数发生变更，它都会立即应用变更。
 
-> Don't worry about the fact that we're redeclaring the `foo` function for every component instance — Svelte will hoist any functions that don't depend on local state out of the component definition.
+> 不必担心为每个componet实例重新声明foo函数，Svelte会自动提升所有compoent definition内不依赖于局部状态（local state）的函数的作用范围。
 
 ```html
 <script>
@@ -794,11 +794,11 @@ transition = (node: HTMLElement, params: any) => {
 
 ---
 
-A transition is triggered by an element entering or leaving the DOM as a result of a state change.
+Transition的触发条件：状态更改、元素进入或离开DOM。
 
-Elements inside an *outroing* block are kept in the DOM until all current transitions have completed.
+*临时(outroing)*块中的标签会一直保留在DOM中，直到当前所有transitions完成为止。
 
-The `transition:` directive indicates a *bidirectional* transition, which means it can be smoothly reversed while the transition is in progress.
+该`transition:` 指令支持 *双向(bidirectional)* 切换， 这意味着 transition 过程中可以支持逆转。(例如显示与隐藏的双向切换)
 
 ```html
 {#if visible}
@@ -808,15 +808,15 @@ The `transition:` directive indicates a *bidirectional* transition, which means 
 {/if}
 ```
 
-> By default intro transitions will not play on first render. You can modify this behaviour by setting `intro: true` when you [create a component](docs#Client-side_component_API).
+> 默认情况下，component 在首次渲染时不会播放 transitions。你可以在[创建 component](docs#Client-side_component_API)时设置`intro: true` 来更改此行为。 
 
-##### Transition parameters
+##### Transition 参数
 
 ---
 
-Like actions, transitions can have parameters.
+像actions一样，transitions 可以带有参数。
 
-(The double `{{curlies}}` aren't a special syntax; this is an object literal inside an expression tag.)
+(这里的两层花括号 `{{curlies}}`并非特殊语法，这是表达式标记内的对象字面量（object literal）。
 
 ```html
 {#if visible}
@@ -826,15 +826,16 @@ Like actions, transitions can have parameters.
 {/if}
 ```
 
-##### Custom transition functions
+##### 自定义 transition 函数
 
 ---
 
-Transitions can use custom functions. If the returned object has a `css` function, Svelte will create a CSS animation that plays on the element.
+Transitions 可以试用自定义函数。如果返回的对象具有 `css` 函数，Svelte将创建一个在标签上播放的CSS动画。
 
-The `t` argument passed to `css` is a value between `0` and `1` after the `easing` function has been applied. *In* transitions run from `0` to `1`, *out* transitions run from `1` to `0` — in other words `1` is the element's natural state, as though no transition had been applied. The `u` argument is equal to `1 - t`.
+ `t`参数传递给`css`，取值范围是`0`到`1`，继而应用到easing函数。*入（In）* transitions 运行是 `0` 到 `1`， *出（out）* transitions运行是 `1` 到 `0`。 换句话说， `1` 表示标签的基础状态，好像没有transition一般。`u` 参数取值范围 `1 - t`。
 
-The function is called repeatedly *before* the transition begins, with different `t` and `u` arguments.
+该函数在transition开始之前,以不同`t` 和 `u`的参数重复调用。
+
 
 ```html
 <script>
@@ -863,9 +864,9 @@ The function is called repeatedly *before* the transition begins, with different
 
 ---
 
-A custom transition function can also return a `tick` function, which is called *during* the transition with the same `t` and `u` arguments.
+自定义 transition 函数还可以返回一个名为`tick`的函数，该函数在transition过程中调用同样的`t` 和 `u` 的参数。
 
-> If it's possible to use `css` instead of `tick`, do so — CSS animations can run off the main thread, preventing jank on slower devices.
+> 如果可以，务必使用 `css` 代替 `tick`，因为 CSS 动画可以在主线程上运行，从而防止运行在性能较差的的设备上出现混乱。
 
 ```html
 <script>
@@ -899,14 +900,14 @@ A custom transition function can also return a `tick` function, which is called 
 {/if}
 ```
 
-If a transition returns a function instead of a transition object, the function will be called in the next microtask. This allows multiple transitions to coordinate, making [crossfade effects](tutorial/deferred-transitions) possible.
+如果 transition 返回的是一个方法而不是一个 transition 对象，则该函数将在下一个微任务中调用。这样可以协调多个 transitions。 使 [淡入淡出效果](tutorial/deferred-transitions) 成为可能。
 
 
-##### Transition events
+##### Transition 事件
 
 ---
 
-An element with transitions will dispatch the following events in addition to any standard DOM events:
+除了所有标准DOM事件外，具有transitions功能的标签还可以调用以下事件：
 
 * `introstart`
 * `introend`
@@ -929,7 +930,7 @@ An element with transitions will dispatch the following events in addition to an
 
 ---
 
-Local transitions only play when the block they belong to is created or destroyed, *not* when parent blocks are created or destroyed.
+局部 transitions 仅在创建或销毁它们所属的块时播放，而创建或销毁其父级时不会。
 
 ```html
 {#if x}
@@ -976,9 +977,10 @@ out:fn|local={params}
 
 ---
 
-Similar to `transition:`, but only applies to elements entering (`in:`) or leaving (`out:`) the DOM.
+与`transition:`类似，但仅适用于进入 (`in:`) 或离开 (`out:`) DOM标签。
 
-Unlike with `transition:`, transitions applied with `in:` and `out:` are not bidirectional — an in transition will continue to 'play' alongside the out transition, rather than reversing, if the block is outroed while the transition is in progress. If an out transition is aborted, transitions will restart from scratch.
+与使用transition:不同，使用in:和out:应用的转换不是双向的，就算在过渡期间块超出范围，in的过渡效果也会继续“播放”对立的out过渡效果，而不是反转。如果out过渡效果中止，过渡将从头开始。
+
 
 ```html
 {#if visible}
@@ -1025,24 +1027,24 @@ DOMRect {
 
 ---
 
-An animation is triggered when the contents of a [keyed each block](docs#each) are re-ordered. Animations do not run when an element is removed, only when the each block's data is reordered. Animate directives must be on an element that is an *immediate* child of a keyed each block.
+动画触发在当内容[ each 块](docs#each)重新遍历时。当标签被移除时不会运行动画。只有在重新遍历each块的数据时才运行。 Animate 指令必须放在当前 each 块的子项的标签上。
 
-Animations can be used with Svelte's [built-in animation functions](docs#svelte_animate) or [custom animation functions](docs#Custom_animation_functions).
+动画可以与Svelte的[内置动画函数](docs#svelte_animate) 或 [自定义动画函数](docs#Custom_animation_functions)一起使用。
 
 ```html
-<!-- When `list` is reordered the animation will run-->
+<!-- 当`list`重新遍历时，动画将运行-->
 {#each list as item, index (item)}
 	<li animate:flip>{item}</li>
 {/each}
 ```
 
-##### Animation Parameters
+##### Animation 参数
 
 ---
 
-As with actions and transitions, animations can have parameters.
+与 actions 和 transitions一样，动画同样具有参数。
 
-(The double `{{curlies}}` aren't a special syntax; this is an object literal inside an expression tag.)
+(这里的两层花括号 `{{curlies}}`并非特殊语法，这是表达式标记内的对象字面量（object literal）。
 
 ```html
 {#each list as item, index (item)}
@@ -1050,17 +1052,17 @@ As with actions and transitions, animations can have parameters.
 {/each}
 ```
 
-##### Custom animation functions
+##### 自定义animation函数
 
 ---
 
-Animations can use custom functions that provide the `node`, an `animation` object and any `paramaters` as arguments. The `animation` parameter is an object containing `from` and `to` properties each containing a [DOMRect](https://developer.mozilla.org/en-US/docs/Web/API/DOMRect#Properties) describing the geometry of the element in its `start` and `end` positions. The `from` property is the DOMRect of the element in its starting position, the `to` property is the DOMRect of the element in its final position after the list has been reordered and the DOM updated.
+动画可以使用“node”、 `animation` 对象和任何 `paramaters`作为参数来定义自定义函数。该 `animation` 是一个对象包含`from` 和`to`属性，每个属性都包含一个 [DOMRect](https://developer.mozilla.org/en-US/docs/Web/API/DOMRect#Properties)用于描述标签的块状 `start` 和 `end` 位置。`from` 属性是标签的DOMRect对象的起始位置 `to` 属性是标签经列表遍历和DOM渲染完成后的DOMRect对象的结束位置。
 
-If the returned object has a `css` method, Svelte will create a CSS animation that plays on the element.
+如果返回对象具有 `css` 方法， Svelte 将创建 CSS 动画在标签上播放。
 
-The `t` argument passed to `css` is a value that goes from `0` and `1` after the `easing` function has been applied. The `u` argument is equal to `1 - t`.
+此`t` 参数传递到 `css` 方法并以 `0` 和 `1` 为值的形式应用给 `easing` 函数。 `u` 的参数取值范围： `1 - t`。
 
-The function is called repeatedly *before* the animation begins, with different `t` and `u` arguments.
+该函数在动画开始之前,以不同`t` 和 `u`的参数重复调用。
 
 
 ```html
@@ -1092,9 +1094,10 @@ The function is called repeatedly *before* the animation begins, with different 
 ---
 
 
-A custom animation function can also return a `tick` function, which is called *during* the animation with the same `t` and `u` arguments.
+自定义animation函数还可以返回一个名为`tick`的函数，该函数在动画过程中调用同样的`t` 和 `u` 的参数。
 
-> If it's possible to use `css` instead of `tick`, do so — CSS animations can run off the main thread, preventing jank on slower devices.
+> 如果可以，务必使用 `css` 代替 `tick`，因为 CSS 动画可以在主线程上运行，从而防止运行在性能较差的的设备上出现混乱。
+
 
 ```html
 <script>
@@ -1124,9 +1127,9 @@ A custom animation function can also return a `tick` function, which is called *
 {/each}
 ```
 
-### Component directives
+### Component 指令
 
-#### [on:*eventname*](on_component_event)
+#### [on:*event名称*](on_component_event)
 
 ```sv
 on:eventname={handler}
@@ -1134,7 +1137,7 @@ on:eventname={handler}
 
 ---
 
-Components can emit events using [createEventDispatcher](docs#createEventDispatcher), or by forwarding DOM events. Listening for component events looks the same as listening for DOM events:
+Components 可以使用 [createEventDispatcher](docs#createEventDispatcher)来发出事件，或者进行DOM事件转发。监听component事件看来和监听DOM事件相同。
 
 ```html
 <SomeComponent on:whatever={handler}/>
@@ -1142,7 +1145,7 @@ Components can emit events using [createEventDispatcher](docs#createEventDispatc
 
 ---
 
-As with DOM events, if the `on:` directive is used without a value, the component will *forward* the event, meaning that a consumer of the component can listen for it.
+与DOM事件一样，如果该指令`on:`不带有值，则component会转发外部事件，也就意味着component的使用者可以监听它。
 
 ```html
 <SomeComponent on:whatever/>
@@ -1157,7 +1160,7 @@ bind:property={variable}
 
 ---
 
-You can bind to component props using the same syntax as for elements.
+你可以使用与标签相同的语法绑定到component props。
 
 ```html
 <Keypad bind:value={pin}/>
@@ -1171,9 +1174,9 @@ bind:this={component_instance}
 
 ---
 
-Components also support `bind:this`, allowing you to interact with component instances programmatically.
+Components 还支持 `bind:this`，允许你编程操作component实例进行交互。
 
-> Note that we can't do `{cart.empty}` since `cart` is `undefined` when the button is first rendered and throws an error.
+> 注意不要使用`{cart.empty}`这样的实行， 因为`cart` 值是`undefined`，将在首次渲染button 时报错。
 
 ```html
 <ShoppingCart bind:this={cart}/>
@@ -1185,13 +1188,13 @@ Components also support `bind:this`, allowing you to interact with component ins
 
 
 
-### `<slot>`
+### `<slot> 组件插值`
 
 ```sv
-<slot><!-- optional fallback --></slot>
+<slot><!-- 可选回调 --></slot>
 ```
 ```sv
-<slot name="x"><!-- optional fallback --></slot>
+<slot name="x"><!-- 可选回调 --></slot>
 ```
 ```sv
 <slot prop={value}></slot>
@@ -1199,22 +1202,22 @@ Components also support `bind:this`, allowing you to interact with component ins
 
 ---
 
-Components can have child content, in the same way that elements can.
+Components 可以和标签一样含有子内容。
 
-The content is exposed in the child component using the `<slot>` element, which can contain fallback content that is rendered if no children are provided.
+Component内使用`<slot>`标签将component内内容暴露给外部，该标签内的内容将作为默认内容暴露给外部。
 
 ```html
 <!-- App.svelte -->
 <Widget></Widget>
 
 <Widget>
-	<p>this is some child content that will overwrite the default slot content</p>
+	<p>本段文本将会替代slot标签内的默认内容。</p>
 </Widget>
 
 <!-- Widget.svelte -->
 <div>
 	<slot>
-		this fallback content will be rendered when no content is provided, like in the first example
+	默认内容，component外部没有内容传入时显示本段文本。
 	</slot>
 </div>
 ```
@@ -1223,7 +1226,7 @@ The content is exposed in the child component using the `<slot>` element, which 
 
 ---
 
-Named slots allow consumers to target specific areas. They can also have fallback content.
+给slot命名可以将外部内容指定给特定区域，component内部命名未被指定的内容将会作为默认内容暴露。
 
 ```html
 <!-- App.svelte -->
@@ -1244,9 +1247,9 @@ Named slots allow consumers to target specific areas. They can also have fallbac
 
 ---
 
-Slots can be rendered zero or more times, and can pass values *back* to the parent using props. The parent exposes the values to the slot template using the `let:` directive.
+Slot可以零次或多次渲染，并且可以通过prop属性将值传回父级,父级使用`let:`指令将值暴露到slot模板。
 
-The usual shorthand rules apply — `let:item` is equivalent to `let:item={item}`, and `<slot {item}>` is equivalent to `<slot item={item}>`.
+通常适用的速记规则：`let:item` 等效于`let:item={item}`，并且 `<slot {item}>` 等效于`<slot item={item}>`。
 
 ```html
 <!-- App.svelte -->
@@ -1266,7 +1269,8 @@ The usual shorthand rules apply — `let:item` is equivalent to `let:item={item}
 
 ---
 
-Named slots can also expose values. The `let:` directive goes on the element with the `slot` attribute.
+命名的slot也可以暴露值。该 `let:`指令位于具有slot属性的标签上。
+
 
 ```html
 <!-- App.svelte -->
@@ -1292,9 +1296,9 @@ Named slots can also expose values. The `let:` directive goes on the element wit
 
 ---
 
-The `<svelte:self>` element allows a component to include itself, recursively.
+`<svelte:self>`标签允许component递归自身。 
 
-It cannot appear at the top level of your markup; it must be inside an if or each block to prevent an infinite loop.
+它不能出现在标签的顶层；它必须在if或each块内，以防止死循环。
 
 ```html
 <script>
@@ -1317,9 +1321,9 @@ It cannot appear at the top level of your markup; it must be inside an if or eac
 
 ---
 
-The `<svelte:component>` element renders a component dynamically, using the component constructor specified as the `this` property. When the property changes, the component is destroyed and recreated.
+`<svelte:component>` 标签动态渲染component，被指定的 component 具有一个 `this` 属性。每当标签上的属性发生变化，该 component 将会销毁并重新创建渲染。
 
-If `this` is falsy, no component is rendered.
+如果`this` 指向的值为`false`则不会呈现任何内容。
 
 ```html
 <svelte:component this={currentSelection.component} foo={bar}/>
@@ -1337,7 +1341,7 @@ If `this` is falsy, no component is rendered.
 
 ---
 
-The `<svelte:window>` element allows you to add event listeners to the `window` object without worrying about removing them when the component is destroyed, or checking for the existence of `window` when server-side rendering.
+ `<svelte:window>` 标签允许你添加事件监听到`window` 对象，从而不用担心移除它时component 被毁，或者在服务端渲染时检查是否存在于 `window`。
 
 ```html
 <script>
@@ -1351,7 +1355,7 @@ The `<svelte:window>` element allows you to add event listeners to the `window` 
 
 ---
 
-You can also bind to the following properties:
+您还可以绑定以下属性：
 
 * `innerWidth`
 * `innerHeight`
@@ -1359,9 +1363,9 @@ You can also bind to the following properties:
 * `outerHeight`
 * `scrollX`
 * `scrollY`
-* `online` — an alias for window.navigator.onLine
+* `online` —  window.navigator.onLine的别名
 
-All except `scrollX` and `scrollY` are readonly.
+除了 `scrollX` 和 `scrollY` 是只读的。
 
 ```html
 <svelte:window bind:scrollY={y}/>
@@ -1376,7 +1380,7 @@ All except `scrollX` and `scrollY` are readonly.
 
 ---
 
-As with `<svelte:window>`, this element allows you to add listeners to events on `document.body`, such as `mouseenter` and `mouseleave` which don't fire on `window`.
+和`<svelte:window>`相同，你可以通过本标签添加监听事件到 `document.body`中，例如`mouseenter` 和 `mouseleave` 并且不会触发`window`。
 
 ```html
 <svelte:body
@@ -1394,7 +1398,7 @@ As with `<svelte:window>`, this element allows you to add listeners to events on
 
 ---
 
-This element makes it possible to insert elements into `document.head`. During server-side rendering, `head` content is exposed separately to the main `html` content.
+通过该标签可以将元素插入到`document.head`中。在服务端渲染时， 内容将插入到`html`的`head`中。
 
 ```html
 <svelte:head>
@@ -1411,14 +1415,14 @@ This element makes it possible to insert elements into `document.head`. During s
 
 ---
 
-The `<svelte:options>` element provides a place to specify per-component compiler options, which are detailed in the [compiler section](docs#svelte_compile). The possible options are:
+`<svelte:options>` 标签为component 提供编译器选项，有关详细信息请参见 [compiler section](docs#svelte_compile)。可选的选项有： 
 
-* `immutable={true}` — you never use mutable data, so the compiler can do simple referential equality checks to determine if values have changed
-* `immutable={false}` — the default. Svelte will be more conservative about whether or not mutable objects have changed
-* `accessors={true}` — adds getters and setters for the component's props
-* `accessors={false}` — the default
-* `namespace="..."` — the namespace where this component will be used, most commonly "svg"
-* `tag="..."` — the name to use when compiling this component as a custom element
+* `immutable={true}` — 你从不使用可变数据，因此编译器可简易相等性检查以确定值是否变更。
+* `immutable={false}` — 默认选项。Svelte对于可变对象的值更改的处理会趋向保守。
+* `accessors={true}` — 给 component 的 prop 添加getter和setter。
+* `accessors={false}` — 默认。
+* `namespace="..."` — 让component的使用名称空间，最常见的是"svg"。
+* `tag="..."` — 将此组件编译为自定义标签时使用的名称。
 
 ```html
 <svelte:options tag="my-custom-element"/>

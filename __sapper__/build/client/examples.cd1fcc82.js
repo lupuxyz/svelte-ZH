@@ -1,0 +1,1 @@
+function e(e){return e.map(e=>{const[t,p]=e.name.split(".");return{name:t,type:p,source:e.source}}).sort((e,t)=>"App"===e.name&&"svelte"===e.type?-1:"App"===t.name&&"svelte"===t.type?1:e.type===t.type?e.name<t.name?-1:1:"svelte"===e.type?-1:"svelte"===t.type?1:void 0)}export{e as p};

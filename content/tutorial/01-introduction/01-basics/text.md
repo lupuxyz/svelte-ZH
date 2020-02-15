@@ -4,7 +4,7 @@ title: 基础知识
 
 欢迎使用Svelte教程。这将教你轻松构建快速的小型Web应用程序所需的一切。
 
-You can also consult the [API docs](docs) and the [examples](examples), or — if you're impatient to start hacking on your machine locally — the [60-second quickstart](blog/the-easiest-way-to-get-started).
+你还可以查看[API 文档](docs) 或者 [示例](examples)，如果你已经迫不及待想要开始，请阅读 [60秒快速上手](blog/the-easiest-way-to-get-started)。
 
 
 ## 什么是 Svelte?
@@ -29,4 +29,4 @@ Svelte 是用于快速构建 web 应用程序的工具。
 
 ## 了解组件
 
-在Svelte中，一个应用程序由一个或多个 *components* 组成，。组件是可复用的自包含代码块，它封装在一起的HTML，CSS和JavaScript，并写入`.svelte` 文件中。右侧代码编辑器中的“ hello world”示例是一个简单的组件。
+在Svelte中，一个应用程序由一个或多个 *component*（组件） 组成，。组件是可复用的自包含代码块，它封装在一起的HTML，CSS和JavaScript，并写入`.svelte` 文件中。右侧代码编辑器中的“ hello world”示例是一个简单的组件。

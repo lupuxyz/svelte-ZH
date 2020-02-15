@@ -1,11 +1,11 @@
 ---
-title: Run time
+title: 运行时
 ---
 
 
 ### `svelte`
 
-The `svelte` package exposes [lifecycle functions](tutorial/onmount) and the [context API](tutorial/context-api).
+该`svelte`包含有 [生命周期函数](tutorial/onmount) 和 [context API](tutorial/context-api)。
 
 #### `onMount`
 
@@ -17,10 +17,9 @@ onMount(callback: () => () => void)
 ```
 
 ---
+该`onMount`函数作为将component挂载到DOM后立即执行的回调。它必须在component初始化期间被调用（但不必位于component内部；可以从外部模块调用它）。
 
-The `onMount` function schedules a callback to run as soon as the component has been mounted to the DOM. It must be called during the component's initialisation (but doesn't need to live *inside* the component; it can be called from an external module).
-
-`onMount` does not run inside a [server-side component](docs#Server-side_component_API).
+`onMount` 不在 [服务端 component](docs#Server-side_component_API)内部运行。
 
 ```html
 <script>
@@ -34,7 +33,7 @@ The `onMount` function schedules a callback to run as soon as the component has 
 
 ---
 
-If a function is returned from `onMount`, it will be called when the component is unmounted.
+如果需要`onMount`返回一个函数，则在卸载 component 时调用该函数。
 
 ```html
 <script>
@@ -58,9 +57,9 @@ beforeUpdate(callback: () => void)
 
 ---
 
-Schedules a callback to run immediately before the component is updated after any state change.
+给所有state变更安排一个回调函数运行在 component渲染之前。
 
-> The first time the callback runs will be before the initial `onMount`
+> 首次回调运行在`onMount`初始化之前。
 
 ```html
 <script>
@@ -80,7 +79,7 @@ afterUpdate(callback: () => void)
 
 ---
 
-Schedules a callback to run immediately after the component has been updated.
+安排一个回调函数运行在 component渲染之后。
 
 ```html
 <script>
@@ -100,9 +99,9 @@ onDestroy(callback: () => void)
 
 ---
 
-Schedules a callback to run once the component is unmounted.
+计划在component卸载后运行的回调。
 
-Out of `onMount`, `beforeUpdate`, `afterUpdate` and `onDestroy`, this is the only one that runs inside a server-side component.
+相对于 `onMount`、 `beforeUpdate`、 `afterUpdate` 和 `onDestroy`，它唯一可以运行在服务端渲染组件内部。
 
 ```html
 <script>
@@ -122,7 +121,7 @@ promise: Promise = tick()
 
 ---
 
-Returns a promise that resolves once any pending state changes have been applied, or in the next microtask if there are none.
+返回一个promise，该promise将在应用state变更后返回resolves，或者在下一个微任务中（如果没有）更改。
 
 ```html
 <script>
@@ -144,9 +143,8 @@ setContext(key: any, context: any)
 
 ---
 
-Associates an arbitrary `context` object with the current component and the specified `key`. The context is then available to children of the component (including slotted content) with `getContext`.
-
-Like lifecycle functions, this must be called during component initialisation.
+将任意`context`对象与当前component同指定的key关联。然后，该context通过`getContext`函数应用到component的子级(包含带slot的内容)。
+像生命周期函数一样，必须在component初始化期间调用它。
 
 ```html
 <script>
@@ -156,7 +154,7 @@ Like lifecycle functions, this must be called during component initialisation.
 </script>
 ```
 
-> Context is not inherently reactive. If you need reactive values in context then you can pass a store into context, which *will* be reactive.
+> Context 本身并不具有响应性。如果你需要在 context 中的值具有响应性，你需要将store传递到context中。
 
 #### `getContext`
 
@@ -166,7 +164,8 @@ context: any = getContext(key: any)
 
 ---
 
-Retrieves the context that belongs to the closest parent component with the specified `key`. Must be called during component initialisation.
+如果你检索父组件含有的指定最近component 的
+`key`，则必须在component初始化期间调用。
 
 ```html
 <script>
@@ -184,9 +183,9 @@ dispatch: ((name: string, detail?: any) => void) = createEventDispatcher();
 
 ---
 
-Creates an event dispatcher that can be used to dispatch [component events](docs#on_component_event). Event dispatchers are functions that can take two arguments: `name` and `detail`.
+创建一个可用于分发[component事件](docs#on_component_event)的事件分发器。事件分发器是一个函数，接受两个参数： `name` 和 `detail`。
 
-Component events created with `createEventDispatcher` create a [CustomEvent](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent). These events do not [bubble](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_bubbling_and_capture) and are not cancellable with `event.preventDefault()`. The `detail` argument corresponds to the [CustomEvent.detail](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/detail) property and can contain any type of data.
+Component 创建一个与 `createEventDispatcher`创建一个 [CustomEvent（自定义事件）](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent).。该事件不会 [bubble](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Events#Event_bubbling_and_capture) ，也无法取消使用 `event.preventDefault()`。该 `detail` 参数对应[CustomEvent.detail](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/detail) 属性，并且可以包含任何数据类型。
 
 ```html
 <script>
@@ -200,7 +199,8 @@ Component events created with `createEventDispatcher` create a [CustomEvent](htt
 
 ---
 
-Events dispatched from child components can be listened to in their parent. Any data provided when the event was dispatched is available on the `detail` property of the event object.
+子component 分发的事件可以在其父子component中监听。调度事件时提供的任何数据都可以在事件对象上获取`detail`属性。
+
 
 ```html
 <script>
@@ -214,11 +214,12 @@ Events dispatched from child components can be listened to in their parent. Any 
 
 ### `svelte/store`
 
-The `svelte/store` module exports functions for creating [readable](docs#readable), [writable](docs#writable) and [derived](docs#derived) stores.
+ `svelte/store` 模块导出函数可用于创建 [readable（可读）](docs#readable), [writable（可写）](docs#writable) 和 [derived（派生）](docs#derived) 的store。
 
-Keep in mind that you don't *have* to use these functions to enjoy the [reactive `$store` syntax](docs#4_Prefix_stores_with_$_to_access_their_values) in your components. Any object that correctly implements `.subscribe`, unsubscribe, and (optionally) `.set` is a valid store, and will work both with the special syntax, and with Svelte's built-in [`derived` stores](docs#derived).
+记住，你不具备使用这些函数并使用[响应性 `$store` 语法](docs#4_Prefix_stores_with_$_to_access_their_values)在你的 component 中。所有对象正确实现`.subscribe`、 unsubscribe和 `.set`（可选）成为一个有效store就可以使用特殊语法以及Svelte内置 [`derived（派生）` store](docs#derived)。
 
-This makes it possible to wrap almost any other reactive state handling library for use in Svelte. Read more about the [store contract](docs#Store_contract) to see what a correct implementation looks like.
+这使得Svelte可以包含几乎所有其他响应式state处理库，阅读更多关于[store contract](docs#Store_contract)，以了解正确使用方式。
+
 
 #### `writable`
 
@@ -231,11 +232,11 @@ store = writable(value: any, (set: (value: any) => void) => () => void)
 
 ---
 
-Function that creates a store which has values that can be set from 'outside' components. It gets created as an object with additional `set` and `update` methods.
+它提供一个给外部组件创建 store 值的函数。它被创建为带有`set`和`update` 方法的对象。
 
-`set` is a method that takes one argument which is the value to be set. The store value gets set to the value of the argument if the store value is not already equal to it.
+`set`是一种接收一个参数的设置值方法。如果store值与参数值不相等，则将其设置为新参数的值。
 
-`update` is a method that takes one argument which is a callback. The callback takes the existing store value as its argument and returns the new value to be set to the store.
+`update`是一种接收一个参数的回调方法。回调将现有store值作为其参数，并返回要设置为store 的新值。
 
 ```js
 import { writable } from 'svelte/store';
@@ -253,7 +254,7 @@ count.update(n => n + 1); // logs '2'
 
 ---
 
-If a function is passed as the second argument, it will be called when the number of subscribers goes from zero to one (but not from one to two, etc). That function will be passed a `set` function which changes the value of the store. It must return a `stop` function that is called when the subscriber count goes from one to zero.
+如果将函数作为第二个参数传递，则在subscriber数从0变为1（但不是从1变为2）时将调用该函数。该函数将被传递一个`set`更改store值的函数。它必须返回一个`stop` 函数在subscriber数从1变为0时调用的函数。
 
 ```js
 import { writable } from 'svelte/store';
@@ -279,10 +280,9 @@ store = readable(value: any, (set: (value: any) => void) => () => void)
 ```
 
 ---
+创建一个无法从“外部”设置其值的store ，第一个参数是store 的初始值。
 
-Creates a store whose value cannot be set from 'outside', the first argument is the store's initial value.
-
-The second argument to `readable` is the same as the second argument to `writable`, except that it is required with `readable` (since otherwise there would be no way to update the store value).
+第二个参数的readable`与的第二个参数`writable`相同`，不同的是必须使用`readable`（否则将无法更新store值）。
 
 ```js
 import { readable } from 'svelte/store';
@@ -313,9 +313,10 @@ store = derived([a, ...b], callback: ([a: any, ...b: any[]], set: (value: any) =
 
 ---
 
-Derives a store from one or more other stores. Whenever those dependencies change, the callback runs.
+`derived（派生）`一个源于一个或多个其他 store的store，只要这些依赖项发生变更，就会执行回调。
 
-In the simplest version, `derived` takes a single store, and the callback returns a derived value.
+在简易版本中，`derived`只拥有一个store且回调返回一个派生值。
+
 
 ```js
 import { derived } from 'svelte/store';
@@ -325,9 +326,9 @@ const doubled = derived(a, $a => $a * 2);
 
 ---
 
-The callback can set a value asynchronously by accepting a second argument, `set`, and calling it when appropriate.
+该回调可以以`set`作为第二个参数，并在适当的时候调用它来异步设置一个值。
 
-In this case, you can also pass a third argument to `derived` — the initial value of the derived store before `set` is first called.
+在这种情况下，你还可以将第三个参数传递到`derived`，即在首次调用`set`之前派生 store 的初始值。
 
 ```js
 import { derived } from 'svelte/store';
@@ -339,7 +340,7 @@ const delayed = derived(a, ($a, set) => {
 
 ---
 
-If you return a function from the callback, it will be called when a) the callback runs again, or b) the last subscriber unsubscribes.
+右侧实例中，如果你的回调函数返回的是一个函数，则会在“a”被回调运行（或当“b”的最后一个subscriber【订阅】被unsubscribes【取订】）时被调用。
 
 ```js
 import { derived } from 'svelte/store';
@@ -357,7 +358,7 @@ const tick = derived(frequency, ($frequency, set) => {
 
 ---
 
-In both cases, an array of arguments can be passed as the first argument instead of a single store.
+在这两种情况下，数组参数都将作为首个参数传递，而不是作为单一的store。
 
 ```js
 import { derived } from 'svelte/store';
@@ -377,9 +378,9 @@ value: any = get(store)
 
 ---
 
-Generally, you should read the value of a store by subscribing to it and using the value as it changes over time. Occasionally, you may need to retrieve the value of a store to which you're not subscribed. `get` allows you to do so.
+通常，你可以通过subscribing（订阅） store 并随时使用它来读取store值。但是当store的值是未被subscribed的，这时候你就可以通过`get`来完成。
 
-> This works by creating a subscription, reading the value, then unsubscribing. It's therefore not recommended in hot code paths.
+>这可以通过创建subscription读取值，然后通过unsubscribing（取订）来取订。但是，在热更新代码路径（hot code paths）中不建议这样做。
 
 ```js
 import { get } from 'svelte/store';
@@ -390,7 +391,7 @@ const value = get(store);
 
 ### `svelte/motion`
 
-The `svelte/motion` module exports two functions, `tweened` and `spring`, for creating writable stores whose values change over time after `set` and `update`, rather than immediately.
+`svelte/motion`模块导出两个函数： `tweened` 和 `spring`。用于创建writable（可写）store，其值会在`set` 和 `update`之后更新，而不是立即更新。
 
 #### `tweened`
 
@@ -398,20 +399,20 @@ The `svelte/motion` module exports two functions, `tweened` and `spring`, for cr
 store = tweened(value: any, options)
 ```
 
-Tweened stores update their values over a fixed duration. The following options are available:
+Tweened（补间） store 值会在固定时间内更新，可选参数：
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the tween lasts
-* `easing` (`function`, default `t => t`) — an [easing function](docs#svelte_easing)
-* `interpolate` (`function`) — see below
+* `delay` (`number`, 默认值： 0) — 开始（单位毫秒）。
+* `duration` (`number`,  默认值：400) — 持续时间（单位毫秒）。
+* `easing` (`function`,  默认值： `t => t`) — [easing 函数](docs#svelte_easing)
+* `interpolate` (`function`) — 参见下文
 
-`store.set` and `store.update` can accept a second `options` argument that will override the options passed in upon instantiation.
+`store.set` 和 `store.update` 可以作为第二个 `options` 的参数，该参数将覆盖实例化时传递的选项。
 
-Both functions return a Promise that resolves when the tween completes. If the tween is interrupted, the promise will never resolve.
+这两个函数都返回一个Promise，并在tweened完成时返回resolves，如果tweened中断，则 promise 将不会返回resolves。
 
 ---
 
-Out of the box, Svelte will interpolate between two numbers, two arrays or two objects (as long as the arrays and objects are the same 'shape', and their 'leaf' properties are also numbers).
+开箱即用，使用Svelte在两个数字、两个数组或两个对象之间进行插值（只要数组和对象是相同的'shape'，并且它们的'leaf'属性也是number）。
 
 ```html
 <script>
@@ -437,7 +438,7 @@ Out of the box, Svelte will interpolate between two numbers, two arrays or two o
 
 ---
 
-If the initial value is `undefined` or `null`, the first value change will take effect immediately. This is useful when you have tweened values that are based on props, and don't want any motion when the component first renders.
+如果初始化的值是`undefined`或`null`，第一个值更改将立即生效，当你具有基于component的tweened值并且在component首次渲染时不希望任何运动时，此功能很有用。
 
 ```js
 const size = tweened(undefined, {
@@ -450,7 +451,8 @@ $: $size = big ? 100 : 10;
 
 ---
 
-The `interpolate` option allows you to tween between *any* arbitrary values. It must be an `(a, b) => t => value` function, where `a` is the starting value, `b` is the target value, `t` is a number between 0 and 1, and `value` is the result. For example, we can use the [d3-interpolate](https://github.com/d3/d3-interpolate) package to smoothly interpolate between two colours.
+`interpolate（插入）` 选项允许你在任意值作为tweened值，它必须是一个`(a, b) => t => value`结构的函数 其中`a` 是起始值，, `b` 是结束值， `t` 必须是一个数字（取值：0-1），例如，我们可以使用 [d3-interpolate](https://github.com/d3/d3-interpolate) 包在两种颜色之间平滑地进行插值。
+
 
 ```html
 <script>
@@ -485,19 +487,19 @@ The `interpolate` option allows you to tween between *any* arbitrary values. It 
 store = spring(value: any, options)
 ```
 
-A `spring` store gradually changes to its target value based on its `stiffness` and `damping` parameters. Whereas `tweened` stores change their values over a fixed duration, `spring` stores change over a duration that is determined by their existing velocity, allowing for more natural-seeming motion in many situations. The following options are available:
+`spring（弹性）` store通过`stiffness`和 `damping`参数逐步变更到目标值，而`tweened`store在改变一个固定时间变更其值。store在由它们现有速度决定的持续时间长短，从而实现更自然的运动效果。可选选项：
 
-* `stiffness` (`number`, default `0.15`) — a value between 0 and 1 where higher means a 'tighter' spring
-* `damping` (`number`, default `0.8`) — a value between 0 and 1 where lower means a 'springier' spring
-* `precision` (`number`, default `0.001`) — determines the threshold at which the spring is considered to have 'settled', where lower means more precise
+* `stiffness` (`number`, 默认值： `0.15`) — 取值：0-1，数值越大效果越生硬(例，灵敏度)。
+* `damping` (`number`, 默认值： `0.8`) — 取值：0-1，数值越小阻尼越小（例，惯性）。
+* `precision` (`number`, 默认值： `0.001`) — 粒度。用于控制上面两个参数的运动幅度大小。
 
 ---
 
-As with [`tweened`](docs#tweened) stores, `set` and `update` return a Promise that resolves if the spring settles. The `store.stiffness` and `store.damping` properties can be changed while the spring is in motion, and will take immediate effect.
+与[`tweened`](docs#tweened) store一样，,`set` 和 `update` 在弹性动画完成时返回一个Promise resolves。 其中 `store.stiffness` 和 `store.damping` 属性可以立即改变其弹性运动特性。
 
-Both `set` and `update` can take a second argument — an object with `hard` or `soft` properties. `{ hard: true }` sets the target value immediately; `{ soft: n }` preserves existing momentum for `n` seconds before settling. `{ soft: true }` is equivalent to `{ soft: 0.5 }`.
+`set` 和 `update` 两者可以用 `hard` 或`soft`属性对象作为第二个参数来表示弹性动画柔度，`{ hard: true }` 表示无弹性， `{ soft: n }` 表示运动曲线柔度。`{ soft: true }` 等效于 `{ soft: 0.5 }`。
 
-[See a full example on the spring tutorial.](tutorial/spring)
+[更多请参阅弹性教程](tutorial/spring)
 
 ```html
 <script>
@@ -512,7 +514,7 @@ Both `set` and `update` can take a second argument — an object with `hard` or 
 
 ---
 
-If the initial value is `undefined` or `null`, the first value change will take effect immediately, just as with `tweened` values (see above).
+如果初始值为 `undefined` 或 `null`，则第一个值更改将立即生效，就像使用 `tweened` 值一样（参阅上文）。
 
 ```js
 const size = spring();
@@ -521,9 +523,9 @@ $: $size = big ? 100 : 10;
 
 ### `svelte/transition`
 
-The `svelte/transition` module exports six functions: `fade`, `fly`, `slide`, `scale`, `draw` and `crossfade`. They are for use with svelte [`transitions`](docs#Transitions).
+`svelte/transition （过渡）` 模块具有六个函数： `fade`, `fly`, `slide`, `scale`, `draw` 和 `crossfade`。 它与 svelte [`transitions`](docs#Transitions)一起使用。
 
-#### `fade`
+#### `fade（淡入淡出）`
 
 ```sv
 transition:fade={params}
@@ -537,14 +539,14 @@ out:fade={params}
 
 ---
 
-Animates the opacity of an element from 0 to the current opacity for `in` transitions and from the current opacity to 0 for `out` transitions.
+通过对标签透明度添加动画实现淡入淡出效果，`in`表示入，`out`表示出。
 
-`fade` accepts the following parameters:
+`fade` 接收以下两个参数：
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the transition lasts
+* `delay` (`number`, 默认值： 0) — 起始时间点（毫秒）。
+* `duration` (`number`, 默认值： 400) — 持续时间（毫秒）。
 
-You can see the `fade` transition in action in the [transition tutorial](tutorial/transition).
+你可以查看 `fade`  [过渡变换教程](tutorial/transition)。
 
 ```html
 <script>
@@ -558,7 +560,7 @@ You can see the `fade` transition in action in the [transition tutorial](tutoria
 {/if}
 ```
 
-#### `blur`
+#### `blur（模糊）`
 
 ```sv
 transition:blur={params}
@@ -572,15 +574,15 @@ out:blur={params}
 
 ---
 
-Animates a `blur` filter alongside an element's opacity.
+`blur`对标签透明度进行一同模糊滤镜处理 。
 
-`blur` accepts the following parameters:
+`blur` 接收以下参数：
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicInOut`) — an [easing function](docs#svelte_easing)
-* `opacity` (`number`, default 0) - the opacity value to animate out to and in from
-* `amount` (`number`, default 5) - the size of the blur in pixels
+* `delay` (`number`, 默认值 0) — 起始点（毫秒）。
+* `duration` (`number`, 默认值 400) — 持续时间（毫秒）。
+* `easing` (`function`, 默认值 `cubicInOut`) — [easing 函数](docs#svelte_easing)。
+* `opacity` (`number`, 默认值 0) - 不透明度（取值0-1）。
+* `amount` (`number`, 默认值 5) - 模糊范围（单位是px，这里不加单位）。
 
 ```html
 <script>
@@ -594,7 +596,7 @@ Animates a `blur` filter alongside an element's opacity.
 {/if}
 ```
 
-#### `fly`
+#### `fly（移动）`
 
 ```sv
 transition:fly={params}
@@ -608,18 +610,18 @@ out:fly={params}
 
 ---
 
-Animates the x and y positions and the opacity of an element. `in` transitions animate from an element's current (default) values to the provided values, passed as parameters. `out` transitions animate from the provided values to an element's default values.
+通过改变标签的 x 和 y 以及透明度实现动画效果，其中使用`in`绑定移入, 用 `out` 绑定移出。
 
-`fly` accepts the following parameters:
+`fly` 接收以下参数：
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicOut`) — an [easing function](docs#svelte_easing)
-* `x` (`number`, default 0) - the x offset to animate out to and in from
-* `y` (`number`, default 0) - the y offset to animate out to and in from
-* `opacity` (`number`, default 0) - the opacity value to animate out to and in from
+* `delay` (`number`, 默认值： 0) — 起始点（毫秒）。
+* `duration` (`number`, 默认值： 400) — 持续时间（毫秒）。
+* `easing` (`function`, 默认值 `cubicOut`) — [easing 函数](docs#svelte_easing)
+* `x` (`number`, 默认值 0) - 往x轴方向偏移量。
+* `y` (`number`, 默认值 0) - 往y轴方向偏移量。
+* `opacity` (`number`, 默认值 0) - 移入/移出时的目标不透明度（如果移入/移出时不同的话）动画（取值0-1）。
 
-You can see the `fly` transition in action in the [transition tutorial](tutorial/adding-parameters-to-transitions).
+你可以查看 `fly`  [过渡教程](tutorial/adding-parameters-to-transitions)查看更多。
 
 ```html
 <script>
@@ -634,7 +636,7 @@ You can see the `fly` transition in action in the [transition tutorial](tutorial
 {/if}
 ```
 
-#### `slide`
+#### `slide（滑动）`
 
 ```sv
 transition:slide={params}
@@ -648,13 +650,13 @@ out:slide={params}
 
 ---
 
-Slides an element in and out.
+将标签滑入滑出。
 
-`slide` accepts the following parameters:
+`slide` 接收以下参数：
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicOut`) — an [easing function](docs#svelte_easing)
+* `delay` (`number`, 默认值 0) — 起始点（毫秒）。
+* `duration` (`number`, 默认值 400) — 持续时间（毫秒）。
+* `easing` (`function`, 默认值 `cubicOut`) — [easing 函数](docs#svelte_easing)。
 
 ```html
 <script>
@@ -669,7 +671,7 @@ Slides an element in and out.
 {/if}
 ```
 
-#### `scale`
+#### `scale（伸缩）`
 
 ```sv
 transition:scale={params}
@@ -683,15 +685,15 @@ out:scale={params}
 
 ---
 
-Animates the opacity and scale of an element. `in` transitions animate from an element's current (default) values to the provided values, passed as parameters. `out` transitions animate from the provided values to an element's default values.
+通过改变标签的大小以及透明度实现动画效果，其中使用`in`绑定伸, 用 `out` 绑定缩（两者也可以绑定相反效果）。
 
-`scale` accepts the following parameters:
+`scale` 接收以下参数：
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number`, default 400) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicOut`) — an [easing function](docs#svelte_easing)
-* `start` (`number`, default 0) - the scale value to animate out to and in from
-* `opacity` (`number`, default 0) - the opacity value to animate out to and in from
+* `delay` (`number`, 默认值 0) — 起始点（毫秒）
+* `duration` (`number`, 默认值 400) — 持续时间（毫秒）
+* `easing` (`function`, 默认值 `cubicOut`) — a[easing 函数](docs#svelte_easing)
+* `start` (`number`, 默认值 0) - in / out时的目标比例（取值0-1）。
+* `opacity` (`number`, 默认值 0) - in / out时的目标不透明度（取值0-1）。
 
 ```html
 <script>
@@ -706,7 +708,7 @@ Animates the opacity and scale of an element. `in` transitions animate from an e
 {/if}
 ```
 
-#### `draw`
+#### `draw（绘制）`
 
 ```sv
 transition:draw={params}
@@ -720,16 +722,16 @@ out:draw={params}
 
 ---
 
-Animates the stroke of an SVG element, like a snake in a tube. `in` transitions begin with the path invisible and draw the path to the screen over time. `out` transitions start in a visible state and gradually erase the path. `draw` only works with elements that have a `getTotalLength` method, like `<path>` and `<polyline>`.
+对SVG标签进行路径绘制动画，就像贪吃蛇一样。 `in` 表示路径由无到有， `out` 表示路径由有到无。 `draw`仅适用于支持 `getTotalLength` 方法的元素，诸如`<path>` 和 `<polyline>`。
 
-`draw` accepts the following parameters:
+`draw` 接收以下参数：
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `speed` (`number`, default undefined) - the speed of the animation, see below.
-* `duration` (`number` | `function`, default 800) — milliseconds the transition lasts
-* `easing` (`function`, default `cubicInOut`) — an [easing function](docs#svelte_easing)
+* `delay` (`number`, 默认值 0) — 起始点
+* `speed` (`number`, 默认值 undefined) - 动画速度，细节见下文。
+* `duration` (`number` | `function`, 默认值 800) — 持续时间（毫秒）。
+* `easing` (`function`, 默认值 `cubicInOut`) —  [easing 函数](docs#svelte_easing)
 
-The `speed` parameter is a means of setting the duration of the transition relative to the path's length. It is modifier that is applied to the length of the path: `duration = length / speed`. A path that is 1000 pixels with a speed of 1 will have a duration of `1000ms`, setting the speed to `0.5` will double that duration and setting it to `2` will halve it.
+该`speed` 参数是一种设置相对于路径长度的过渡持续时间的方法。它是应用于路径长度的修饰符： `duration = length / speed`。速度为1的1000像素路径的持续时间为 `1000ms`,将速度设置为`0.5`表示一半的速度完成（所以持续时间加倍）， `2` 表示两倍的速度完成（所以时间减半）。
 
 ```html
 <script>
@@ -758,31 +760,32 @@ The `speed` parameter is a means of setting the duration of the transition relat
 
 ### `svelte/animate`
 
-The `svelte/animate` module exports one function for use with svelte [animations](docs#Animations).
+`svelte/animate` 模块导出一个函数 与 svelte [animations](docs#Animations)一起使用。
 
-#### `flip`
+#### `flip（翻转）`
 
 ```sv
 animate:flip={params}
 ```
 
+`flip` 函数计算标签的开始和结束位置并在它们之间进行动画效果，并翻转`x` 和 `y`的值，`flip`由 [初始, 最终, 翻转, Play（FLIP）](https://aerotwist.com/blog/flip-your-animations/)支持。
 The `flip` function calculates the start and end position of an element and animates between them, translating the `x` and `y` values. `flip` stands for [First, Last, Invert, Play](https://aerotwist.com/blog/flip-your-animations/).
 
-`flip` accepts the following parameters:
+`flip` 接收以下参数：
 
-* `delay` (`number`, default 0) — milliseconds before starting
-* `duration` (`number` | `function`, default `d => Math.sqrt(d) * 120`) — see below
-* `easing` (`function`, default [`cubicOut`](docs#cubicOut)) — an [easing function](docs#svelte_easing)
+* `delay` (`number`, 默认值 0) — 起始点（毫秒）
+* `duration` (`number` | `function`, 默认值 `d => Math.sqrt(d) * 120`) — 细节参见下文。
+* `easing` (`function`, 默认值 [`cubicOut`](docs#cubicOut)) — an [easing 函数](docs#svelte_easing)
 
 
-`duration` can be be provided as either:
+`duration` 可接收参数：
 
-- a `number`, in milliseconds.
-- a function, `distance: number => duration: number`, receiving the distance the element will travel in pixels and returning the duration in milliseconds. This allows you to assign a duration that is relative to the distance travelled by each element.
+- 一个`number`, 单位毫秒
+- 一个函数，结构 `distance: number => duration: number`，接收标签将以像素为单位移动的距离，并以毫秒为单位返回持续时间。这使您可以分配一个持续时间，该持续时间与每个标签的移距离有关。
 
 ---
 
-You can see a full example on the [animations tutorial](tutorial/animate)
+查看 [animations 教程](tutorial/animate)查看示例。
 
 
 ```html
@@ -804,12 +807,12 @@ You can see a full example on the [animations tutorial](tutorial/animate)
 
 ### `svelte/easing`
 
-Easing functions specificy the rate of change over time and are useful when working with Svelte's built-in transitions and animations as well as the tweened and spring utilities. `svelte/easing` contains 31 named exports, a `linear` ease and 3 variants of 10 different easing functions: `in`, `out` and `inOut`.
+Easing 函数可指定根据时间变化的速率，在使用Svelte的内置transition和animation以及tweened和spring程序时非常有用。  `svelte/easing` 包含31个导出命名，, 一个`linear（线性）`缓动使用`in`， `out` 和 `inOut`轻松生成10种不同的缓动函数：
 
-You can explore the various eases using the [ease visualiser](examples#easing) in the [examples section](examples).
+你可以结合 [ease visualiser](examples#easing) 和 [examples section](examples)示例了解更多。
 
 
-| ease | in | out | inOut |
+| 缓动样式 | in | out | inOut |
 | --- | --- | --- | --- |
 | **back** | `backIn` | `backOut` | `backInOut` |
 | **bounce** | `bounceIn` | `bounceOut` | `bounceInOut` |
@@ -825,7 +828,7 @@ You can explore the various eases using the [ease visualiser](examples#easing) i
 
 ### `svelte/register`
 
-To render Svelte components in Node.js without bundling, use `require('svelte/register')`. After that, you can use `require` to include any `.svelte` file.
+要在 Node.js 环境中使用 Svelte 组件无需捆绑，请使用`require('svelte/register')`。 之后，你可以使用 `require` 来包含任何`.svelte` 文件。
 
 ```js
 require('svelte/register');
@@ -837,27 +840,27 @@ const App = require('./App.svelte').default;
 const { html, css, head } = App.render({ answer: 42 });
 ```
 
-> The `.default` is necessary because we're converting from native JavaScript modules to the CommonJS modules recognised by Node. Note that if your component imports JavaScript modules, they will fail to load in Node and you will need to use a bundler instead.
+> 为什么要加`.default` ，是因为我们正在将原生JavaScript模块转换为Node可以识别的CommonJS模块。请注意，如果您的组件导入了JavaScript模块， 则它们将无法在Node中加载，而你也需要使用捆绑器。
 
-To set compile options, or to use a custom file extension, call the `register` hook as a function:
+要设置编译选项或使用自定义文件扩展名，请调用`register` 作为钩子函数：
 
 ```js
 require('svelte/register')({
-  extensions: ['.customextension'], // defaults to ['.html', '.svelte']
+  extensions: ['.customextension'], // 默认 ： ['.html', '.svelte']
 	preserveComments: true
 });
 ```
 
 
-### Client-side component API
+### 客户端 component API
 
-#### Creating a component
+#### 创建 component
 
 ```js
 const component = new Component(options)
 ```
 
-A client-side component — that is, a component compiled with `generate: 'dom'` (or the `generate` option left unspecified) is a JavaScript class.
+客户端 component 使用 `generate: 'dom'` (或 `generate` 选项不指定)编译的component是JavaScript类。
 
 ```js
 import App from './App.svelte';
@@ -865,33 +868,33 @@ import App from './App.svelte';
 const app = new App({
 	target: document.body,
 	props: {
-		// assuming App.svelte contains something like
+		// 类似于 App.svelte 这样
 		// `export let answer`:
 		answer: 42
 	}
 });
 ```
 
-The following initialisation options can be provided:
+可以提供以下初始化选项：
 
-| option | default | description |
+| 选项 | 默认值 | 描述 |
 | --- | --- | --- |
-| `target` | **none** | An `HTMLElement` to render to. This option is required
-| `anchor` | `null` | A child of `target` to render the component immediately before
-| `props` | `{}` | An object of properties to supply to the component
-| `hydrate` | `false` | See below
-| `intro` | `false` | If `true`, will play transitions on initial render, rather than waiting for subsequent state changes
+| `target` | **none** | 指定`HTMLElement（HTML标签）` 来渲染。此选项是必需的。
+| `anchor` | `null` | `target（目标）`子级之前即将渲染的component。
+| `props` | `{}` | 提供给component的属性对象。
+| `hydrate` | `false` | 见下文。
+| `intro` | `false` | 如果为 `true`，在初始渲染时播放transition，而不是等待后续更改。
 
-Existing children of `target` are left where they are.
+`target目标）`的现有子级留在他们所在的地方。
 
 
 ---
 
-The `hydrate` option instructs Svelte to upgrade existing DOM (usually from server-side rendering) rather than creating new elements. It will only work if the component was compiled with the [`hydratable: true` option](docs#svelte_compile).
+该`hydrate`选项指示Svelte更新现有DOM标签（通常从服务端渲染）而不是创建新标签。只有在使用[`hydratable: true` 选项](docs#svelte_compile)编译component时，它才起作用，也唯有使用编译component时，它才起作用。只有当服务器渲染代码也使用`hydratable: true`编译时，<head>标签的`hydrate`才起作用，这将为<head>中的每个标签添加一个标记，以便component知道它在`hydrate`过程中负责移除哪些标签。
 
-Whereas children of `target` are normally left alone, `hydrate: true` will cause any children to be removed. For that reason, the `anchor` option cannot be used alongside `hydrate: true`.
+仅当`target目标）`只有一个子级，其子级`hydrate: true`才会生效。因此，`anchor`不能与`hydrate: true`一起使用。
 
-The existing DOM doesn't need to match the component — Svelte will 'repair' the DOM as it goes.
+现有DOM不需要匹配component，Svelte会自动纠正它。
 
 ```js
 import App from './App.svelte';
@@ -910,9 +913,9 @@ component.$set(props)
 
 ---
 
-Programmatically sets props on an instance. `component.$set({ x: 1 })` is equivalent to `x = 1` inside the component's `<script>` block.
+以编程方式在实例上设置 prop ， `component.$set({ x: 1 })` 等同于 `x = 1` 在`<script>` 块内。
 
-Calling this method schedules an update for the next microtask — the DOM is *not* updated synchronously.
+调用此方法可调度下一个微任务的更新，但是DOM不会同步更新。
 
 ```js
 component.$set({ answer: 42 });
@@ -926,9 +929,9 @@ component.$on(event, callback)
 
 ---
 
-Causes the `callback` function to be called whenever the component dispatches an `event`.
+借用 `callback` ，可以使组件每当分派一个`event`时就调用该函数。
 
-A function is returned that will remove the event listener when called.
+返回一个函数，该函数在调用时将删除事件侦听器。
 
 ```js
 const off = app.$on('selected', event => {
@@ -944,7 +947,7 @@ off();
 component.$destroy()
 ```
 
-Removes a component from the DOM and triggers any `onDestroy` handlers.
+从DOM中删除component并触发所有` onDestroy` 处理程序。
 
 #### Component props
 
@@ -957,9 +960,9 @@ component.prop = value
 
 ---
 
-If a component is compiled with `accessors: true`, each instance will have getters and setters corresponding to each of the component's props. Setting a value will cause a *synchronous* update, rather than the default async update caused by `component.$set(...)`.
+如果设置`accessors: true`编译组件，则每实例将具有该component每个prop对应的getter 和 setter。设置值将导致同步更新，请勿使用`component.$set(...)`触发默认的异步更新。
 
-By default, `accessors` is `false`, unless you're compiling as a custom element.
+默认情况下， `accessors` 为 `false`，除非你要将其作为自定义标签来编译。
 
 ```js
 console.log(app.count);
@@ -967,11 +970,11 @@ app.count += 1;
 ```
 
 
-### Custom element API
+### 自定义 element API
 
 ---
 
-Svelte components can also be compiled to custom elements (aka web components) using the `customElement: true` compiler option. You should specify a tag name for the component using the `<svelte:options>` [element](docs#svelte_options).
+Svelte component也可以使用`customElement: true`来告诉编译器将component编译为自定义标签。使用`<svelte:options>` [标签](docs#svelte_options)为组件指定标签名。
 
 ```html
 <svelte:options tag="my-element">
@@ -986,7 +989,7 @@ Svelte components can also be compiled to custom elements (aka web components) u
 
 ---
 
-Alternatively, use `tag={null}` to indicate that the consumer of the custom element should name it.
+或者，使用`tag={null}` 指示自定义标签的使用者应为其命名。
 
 ```js
 import MyElement from './MyElement.svelte';
@@ -996,7 +999,7 @@ customElements.define('my-element', MyElement);
 
 ---
 
-Once a custom element has been defined, it can be used as a regular DOM element:
+定义自定义标签后，就可以将它作为常规DOM标签使用。
 
 ```js
 document.body.innerHTML = `
@@ -1008,9 +1011,9 @@ document.body.innerHTML = `
 
 ---
 
-By default, custom elements are compiled with `accessors: true`, which means that any [props](docs#Attributes_and_props) are exposed as properties of the DOM element (as well as being readable/writable as attributes, where possible).
+默认情况下，自定义标签设置 `accessors: true`后，也就意味着将所有component的 [props](docs#Attributes_and_props) 属性暴露给 DOM 标签 (有时也可以将 readable/writable 作为作为属性)。
 
-To prevent this, add `accessors={false}` to `<svelte:options>`.
+为防止这种情况，请添加 `accessors={false}` 到 `<svelte:options>`。
 
 ```js
 const el = document.querySelector('my-element');
@@ -1022,18 +1025,18 @@ console.log(el.name);
 el.name = 'everybody';
 ```
 
-Custom elements can be a useful way to package components for consumption in a non-Svelte app, as they will work with vanilla HTML and JavaScript as well as [most frameworks](https://custom-elements-everywhere.com/). There are, however, some important differences to be aware of:
+自定义标签将component打包在非Svelte应用中使用的最有效方法，因为自定义元素将与原生HTML 和 JavaScript以及[大部分框架](https://custom-elements-everywhere.com/)一同使用，但需要注意一些重要的差异：
 
-* Styles are *encapsulated*, rather than merely *scoped*. This means that any non-component styles (such as you might have in a `global.css` file) will not apply to the custom element, including styles with the `:global(...)` modifier
-* Instead of being extracted out as a separate .css file, styles are inlined into the component as a JavaScript string
-* Custom elements are not generally suitable for server-side rendering, as the shadow DOM is invisible until JavaScript loads
-* In Svelte, slotted content renders *lazily*. In the DOM, it renders *eagerly*. In other words, it will always be created even if the component's `<slot>` element is inside an `{#if ...}` block. Similarly, including a `<slot>` in an `{#each ...}` block will not cause the slotted content to be rendered multiple times
-* The `let:` directive has no effect
-* Polyfills are required to support older browsers
+* 样式是被 *encapsulated（封装）*的，而不仅仅是scoped（局部)范围内。这也就意味着任何非component样式（例如你可能在global.css中含有样式），都将不适用于自定义标签， 包括带有:global(...)修饰符的样式。
+* 样式不是作为单独的.css文件提取出来的，而是作为JavaScript字符串内联到组件中的
+* 自定义标签通常不适合服务端渲染，因为在加载JavaScript之前，shadow DOM是不可见的
+* Svelte中， slotted（插值） 内容属于 *lazily*（懒）渲染。在DOM中，它是 *eagerly*（勤）渲染。换句话说，即使component的`<slot>`标签在`{#if ...}` 也始终创建它，同样，`<slot>` 在一个 `{#each ...}`块中包含不会导致分段显示的内容被多次渲染。
+*  `let:` 指令将会报废。
+* 需要Polyfills来支持较旧的浏览器
 
 
 
-### Server-side component API
+### 服务端 component API
 
 ```js
 const result = Component.render(...)
@@ -1041,11 +1044,11 @@ const result = Component.render(...)
 
 ---
 
-Unlike client-side components, server-side components don't have a lifespan after you render them — their whole job is to create some HTML and CSS. For that reason, the API is somewhat different.
+与客户端 component 不同，服务端component在渲染后没有生命周期，它们的全部工作就是创建一些HTML 和 CSS。因此，API有所不同。
 
-A server-side component exposes a `render` method that can be called with optional props. It returns an object with `head`, `html`, and `css` properties, where `head` contains the contents of any `<svelte:head>` elements encountered.
+服务端component暴露一个`render` 方法作为可选方法调用。他返回一个具有`head`、 `html` 和 `css`属性的对象，其中`head`包含`<svelte:head>`标签中设置的所有内容。
 
-You can import a Svelte component directly into Node using [`svelte/register`](docs#svelte_register).
+你可以通过 [`svelte/register`](docs#svelte_register)导入Svelte component到Node.js。
 
 ```js
 require('svelte/register');

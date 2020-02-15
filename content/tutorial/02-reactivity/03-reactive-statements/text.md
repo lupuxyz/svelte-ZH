@@ -2,7 +2,7 @@
 title: 深入反应式声明
 ---
 
-反应式声明不仅可以与*values* 进行绑定，你还可以加入任意语句，例如， 我们可以记录 `count` whenever it changes:
+反应式声明不仅可以与*values* 进行绑定，你还可以加入任意语句，例如， 我们可以记录 `count`的变化：
 
 ```js
 $: console.log(`the count is ${count}`);

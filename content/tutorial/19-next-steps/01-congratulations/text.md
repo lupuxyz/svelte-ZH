@@ -6,6 +6,6 @@ title: 恭喜！
 
 要在本地开发环境中进行设置，请移步[快速入门](blog/the-easiest-way-to-get-started).
 
-如果您正在寻找一个更广泛的框架，包括路由，服务器端渲染以及其他更多内容，请查看[Sapper](https://sapper.svelte.dev).
+如果你正在寻找一个更广泛的框架，包括路由，服务器端渲染以及其他更多内容，请查看[Sapper](https://sapper.svelte.dev).
 
-最重要的是：由于您现在是Svelte社区的成员，因此您应该 [加入 Discord 聊天室和大家一起探讨](chat)。 在这里可以找到Svelte的其他用户，并且在这里我们规划框架的未来。
+最重要的是：由于你现在是Svelte社区的成员，因此您应该 [加入 Discord 聊天室和大家一起探讨](chat)。 在这里可以找到Svelte的其他用户，并且在这里我们规划框架的未来。

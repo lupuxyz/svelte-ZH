@@ -2,14 +2,13 @@
 title: Compile time
 ---
 
-Typically, you won't interact with the Svelte compiler directly, but will instead integrate it into your build system using a bundler plugin:
+通常，您不会直接与Svelte编译器进行交互，而是使用捆绑程序插件将其集成到构建系统中
 
-* [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) for users of [Rollup](https://rollupjs.org)
-* [svelte-loader](https://github.com/sveltejs/svelte-loader) for users of [webpack](https://webpack.js.org)
-* or one of the [community-maintained plugins](https://github.com/sveltejs/integrations#bundler-plugins)
+* 如果使用[Rollup](https://rollupjs.org)，请使用[rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte)。
+* 如果使用[webpack](https://webpack.js.org)请使用[svelte-loader](https://github.com/sveltejs/svelte-loader)。
+* 或者 [社区维护的 plugins](https://github.com/sveltejs/integrations#bundler-plugins)
 
-Nonetheless, it's useful to understand how to use the compiler, since bundler plugins generally expose compiler options to you.
-
+尽管如此，了解打包器的用法还是很有用的，因为捆绑程序插件通常向您提供编译器选项。
 
 
 ### `svelte.compile`
@@ -27,7 +26,7 @@ result: {
 
 ---
 
-This is where the magic happens. `svelte.compile` takes your component source code, and turns it into a JavaScript module that exports a class.
+`svelte.compile` 施加魔法般获取component源代码，并将其转换为JavaScript模块来到出class。
 
 ```js
 const svelte = require('svelte/compiler');
@@ -37,9 +36,9 @@ const result = svelte.compile(source, {
 });
 ```
 
-The following options can be passed to the compiler. None are required:
+没有一个required，即可将以下选学校传递给编译器：
 
-<!-- | option | type | default
+<!-- | 选项 | 类型 | 默认值
 | --- | --- | --- |
 | `filename` | string | `null`
 | `name` | string | `"Component"`
@@ -60,31 +59,31 @@ The following options can be passed to the compiler. None are required:
 | `cssOutputFilename` | string | `null`
 | `sveltePath` | string | `"svelte"` -->
 
-| option | default | description |
+| 选项 | 默认 | 描述 |
 | --- | --- | --- |
-| `filename` | `null` | `string` used for debugging hints and sourcemaps. Your bundler plugin will set it automatically.
-| `name` | `"Component"` | `string` that sets the name of the resulting JavaScript class (though the compiler will rename it if it would otherwise conflict with other variables in scope). It will normally be inferred from `filename`.
-| `format` | `"esm"` | If `"esm"`, creates a JavaScript module (with `import` and `export`). If `"cjs"`, creates a CommonJS module (with `require` and `module.exports`), which is useful in some server-side rendering situations or for testing.
-| `generate` | `"dom"` | If `"dom"`, Svelte emits a JavaScript class for mounting to the DOM. If `"ssr"`, Svelte emits an object with a `render` method suitable for server-side rendering. If `false`, no JavaScript or CSS is returned; just metadata.
-| `dev` | `false` | If `true`, causes extra code to be added to components that will perform runtime checks and provide debugging information during development.
-| `immutable` | `false` | If `true`, tells the compiler that you promise not to mutate any objects. This allows it to be less conservative about checking whether values have changed.
-| `hydratable` | `false` | If `true`, enables the `hydrate: true` runtime option, which allows a component to upgrade existing DOM rather than creating new DOM from scratch.
-| `legacy` | `false` | If `true`, generates code that will work in IE9 and IE10, which don't support things like `element.dataset`.
-| `accessors` | `false` | If `true`, getters and setters will be created for the component's props. If `false`, they will only be created for readonly exported values (i.e. those declared with `const`, `class` and `function`). If compiling with `customElement: true` this option defaults to `true`.
-| `customElement` | `false` | If `true`, tells the compiler to generate a custom element constructor instead of a regular Svelte component.
-| `tag` | `null` | A `string` that tells Svelte what tag name to register the custom element with. It must be a lowercase alphanumeric string with at least one hyphen, e.g. `"my-element"`.
-| `css` | `true` | If `true`, styles will be included in the JavaScript class and injected at runtime. It's recommended that you set this to `false` and use the CSS that is statically generated, as it will result in smaller JavaScript bundles and better performance.
-| `loopGuardTimeout` | 0 | A `number` that tells Svelte to break the loop if it blocks the thread for more than `loopGuardTimeout` ms. This is useful to prevent infinite loops. **Only available when `dev: true`**
-| `preserveComments` | `false` | If `true`, your HTML comments will be preserved during server-side rendering. By default, they are stripped out.
-| `preserveWhitespace` | `false` | If `true`, whitespace inside and between elements is kept as you typed it, rather than optimised by Svelte.
-| `outputFilename` | `null` | A `string` used for your JavaScript sourcemap.
-| `cssOutputFilename` | `null` | A `string` used for your CSS sourcemap.
-| `sveltePath` | `"svelte"` | The location of the `svelte` package. Any imports from `svelte` or `svelte/[module]` will be modified accordingly.
+| `filename` | `null` | `string`， 用于调试提示和源映射。你的捆绑插件会自动进行设置。
+| `name` | `"Component"` | `string` ，它设置为一个JavaScript类的名称（不过，如果它与作用域中的其他变量冲突，编译器将对它进行重命名）。它通常是从`filename`中推断出来的。 
+| `format` | `"esm"` | 如果为`"esm"`，则创建一个带有`import` 和 `export`的JavaScript模块，如果是 `"cjs"`，创建一个带有`require` 和`module.exports`的CommonJS模块该模块在一些用于服务端渲染或测试的场景下很有用。
+| `generate` | `"dom"` | 如果为 `"dom"`， 则Svelte会发出一个JavaScript 类来挂载到DOM。如果为`"ssr"`，Svelte 会用`render`方法发出一个适用于服务端渲染中对象，如果为 `false`，则无JavaScript 或 CSS 返回，只返回元数据。 
+| `dev` | `false` | 如果为 `true`，则会将额外代码添加到组件中，这些代码在执行运行时检查并在开发过程中提供调试信息。
+| `immutable` | `false` | 如果为`true`，则告诉编译器你保证不会后续改变任何对象。这使它在检查值是否已更改时不那么严格。
+| `hydratable` | `false` | 如果为 `true`， 启用`hydrate: true` 运行时选项，运行component 升级现有 DOM，而不是从头开始创建新DOM。生成SSR代码时，这会向`<head>`标签添加标记，以便`hydration`知道要替换的元素。
+| `legacy` | `false` | 如果为 `true`， 则生成可在IE9和IE10中使用的代码，不支持类似于`element.dataset`的这些代码。
+| `accessors` | `false` | 如果为`true`，将为component的porp创建getter和setter。如果为 `false`， 则仅为只读导出值创建（即用`const`、 `class` 和 `function`声明的值）。如果编译的带有 `customElement: true` 选项则默认为 `true`。
+| `customElement` | `false` | 如果为 `true`,告诉编译器生成自定义标签构造函数，而不是常规的 Svelte component。
+| `tag` | `null` |  `string`，告诉编译器指定一个tag名作为自定义标签名，它必须含有且是一个小写连字字符串，类似于`"my-element"`。
+| `css` | `true` | 如果是 `true`，样式将包含在JavaScript类中并在运行时注入。建议您将其设置为`false`，并使用静态生成的CSS，因为它会使JavaScript包更小以及性能会更好。
+| `loopGuardTimeout` | 0 |  `number`， 告诉Svelte如果线程阻塞时长超过 `loopGuardTimeout`设置的时间时终止循环， 这对防止无限循环很有效。 **仅在`dev: true`情况下生效**
+| `preserveComments` | `false` | 如果为 `true`，你的HTML注释将在服务端渲染中保留；当然默认情况下是会被删除。 
+| `preserveWhitespace` | `false` | 如果为`true`，标签内的空格将会被保留，而不会被Svelte删除或折叠成单个空格。
+| `outputFilename` | `null` |  `string`，用于你的 JavaScript 源映射。
+| `cssOutputFilename` | `null` | `string` ，用于你的CSS 源映射。
+| `sveltePath` | `"svelte"` | `svelte` 包位置，所有引入来自`svelte` 或 `svelte/[module]` 的路径都将被修改。
 
 
 ---
 
-The returned `result` object contains the code for your component, along with useful bits of metadata.
+返回的`result`对象包含component的代码以及所使用的元数据字节。
 
 ```js
 const {
@@ -97,28 +96,27 @@ const {
 } = svelte.compile(source);
 ```
 
-* `js` and `css` are objects with the following properties:
-	* `code` is a JavaScript string
-	* `map` is a sourcemap with additional `toString()` and `toUrl()` convenience methods
-* `ast` is an abstract syntax tree representing the structure of your component.
-* `warnings` is an array of warning objects that were generated during compilation. Each warning has several properties:
-	* `code` is a string identifying the category of warning
-	* `message` describes the issue in human-readable terms
-	* `start` and `end`, if the warning relates to a specific location, are objects with `line`, `column` and `character` properties
-	* `frame`, if applicable, is a string highlighting the offending code with line numbers
-* `vars` is an array of the component's declarations, used by [eslint-plugin-svelte3](https://github.com/sveltejs/eslint-plugin-svelte3) for example. Each variable has several properties:
-	* `name` is self-explanatory
-	* `export_name` is the name the value is exported as, if it is exported (will match `name` unless you do `export...as`)
-	* `injected` is `true` if the declaration is injected by Svelte, rather than in the code you wrote
-	* `module` is `true` if the value is declared in a `context="module"` script
-	* `mutated` is `true` if the value's properties are assigned to inside the component
-	* `reassigned` is `true` if the value is reassigned inside the component
-	* `referenced` is `true` if the value is used outside the declaration
-	* `writable` is `true` if the value was declared with `let` or `var` (but not `const`, `class` or `function`)
-* `stats` is an object used by the Svelte developer team for diagnosing the compiler. Avoid relying on it to stay the same!
+* `js` 和 `css` 是具有以下属性的对象： 
+	* `code` ：为JavaScript 字符串。
+	* `map` ：是具有 `toString()` 和 `toUrl()` 的源映射方法。
+* `ast` ：是用于表示component结构的抽象（abstract）语法树（syntax tree）。
+* `warnings` 是在编译期间生成的警告对象的数组。每个警告都有几个属性：
+	* `code`使用其来说明警告类别的字符串。
+	* `message` 描述问题信息使其易于理解。
+	* `start` 和`end`，，如果警告需要指定到特定位置，请使其为一个具备 `line`、 `column` 和 `character`属性的对象。
+	* `frame`，如果含有，是用于标记代码行号突出有问题代码的字符串。Each
+* `vars` 是一个component 声明数组， 例如 [eslint-plugin-svelte3](https://github.com/sveltejs/eslint-plugin-svelte3)般使用，每个变量都有几个属性：
+	* `name` 顾名思义。
+	* `export_name` 指定其值导出的名称（如果它需要导出） (除非已指定其`name` ，负责将使用 `export...as`导出其name)
+	* `injected` 是 `true`，声明是由Svelte注入（true）还是由你编写的代码注入（false）。
+	* `module` 为 `true` 且表示在脚本中声明`context="module"`。 
+	* `mutated` 为 `true` 且将值的属性分配到component内部。
+	* `reassigned` 为`true` 且表示重新分配值到component内部。
+	* `referenced` 为 `true` 且表示值在声明之外使用值。
+	* `writable` 为 `true` 如果值使用 `let` 或 `var` (不是 `const`、`class` 或 `function`)来声明。
+* `stats` 是Svelte开发团队用来诊断编译器的对象，请保持其不做变动。
 
 
-<!--
 
 ```js
 compiled: {
@@ -152,7 +150,6 @@ compiled: {
 } = svelte.compile(source: string, options?: {...})
 ```
 
--->
 
 
 ### `svelte.parse`
@@ -169,7 +166,7 @@ ast: object = svelte.parse(
 
 ---
 
-The `parse` function parses a component, returning only its abstract syntax tree. Unlike compiling with the `generate: false` option, this will not perform any validation or other analysis of the component beyond parsing it.
+该`parse` 解析一个 component，仅返回其抽象语法树。 与使用`generate: false` 选项进行编译不同，它不会对component进行任何验证或额外解析， 只会解析其自身。
 
 
 ```js
@@ -209,15 +206,15 @@ result: {
 
 ---
 
-The `preprocess` function provides convenient hooks for arbitrarily transforming component source code. For example, it can be used to convert a `<style lang="sass">` block into vanilla CSS.
+此 `preprocess` 函数为所有改动component源代码提供一个方便的钩子，例如，它可以用于将`<style lang="sass">`块转换为原生CSS。 
 
-The first argument is the component source code. The second is an array of *preprocessors* (or a single preprocessor, if you only have one), where a preprocessor is an object with `markup`, `script` and `style` functions, each of which is optional.
+首个参数为component源代码，第二个参数为 *preprocessors* （预处理器）数组（如果仅有一个可为单个*preprocessors*），*preprocessors*对象可以使用 `markup`， `script` 和 `style` 作为可选函数。
 
-Each `markup`, `script` or `style` function must return an object (or a Promise that resolves to an object) with a `code` property, representing the transformed source code, and an optional array of `dependencies`.
+各个 `markup`、`script`或 `style` 函数必须返回一个对象 (或以Promise 的 resolves来作为对象返回)和 `code` 属性来表示改动后的源代码， 以及一个`dependencies`数组（可选）。
 
-The `markup` function receives the entire component source text, along with the component's `filename` if it was specified in the third argument.
+该`markup` 将接收到 component 原文本，以及在第三个参数中指定了component的`filename`值对应的原文本。
 
-> Preprocessor functions may additionally return a `map` object alongside `code` and `dependencies`, where `map` is a sourcemap representing the transformation. In current versions of Svelte it will be ignored, but future versions of Svelte may take account of preprocessor sourcemaps.
+> Preprocessor函数可能还会返回一个`map` 对象以及对应的`code`和`dependencies`， 其中 `map` 表示改动的源映射。在当前Svelte版本中，它将会被忽略， 但是将来的Svelte版本可能会考虑预处理器源映射。
 
 ```js
 const svelte = require('svelte/compiler');
@@ -235,9 +232,9 @@ const { code } = svelte.preprocess(source, {
 
 ---
 
-The `script` and `style` functions receive the contents of `<script>` and `<style>` elements respectively. In addition to `filename`, they get an object of the element's attributes.
+该 `script` 和 `style`函数接收 `<script>` 和 `<style>` 标签内的内容。除了`filename`以外， 还可以获取标签的属性对象。
 
-If a `dependencies` array is returned, it will be included in the result object. This is used by packages like [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) to watch additional files for changes, in the case where your `<style>` tag has an `@import` (for example).
+如果返回的是一个 `dependencies` 数组，它将被包含在结果对象中。 它使用类似于 [rollup-plugin-svelte](https://github.com/sveltejs/rollup-plugin-svelte) 来监听其他文件变更， 例如监听`<style>`标签中带有 `@import` 语句。
 
 ```js
 const svelte = require('svelte/compiler');
@@ -272,7 +269,7 @@ const { code, dependencies } = svelte.preprocess(source, {
 
 ---
 
-Multiple preprocessors can be used together. The output of the first becomes the input to the second. `markup` functions run first, then `script` and `style`.
+多个 preprocessors 可以同时使用。第一个的输出成为第二个的输入。 `markup`函数首先运行， 然后运行 `script` 和 `style`。
 
 ```js
 const svelte = require('svelte/compiler');
@@ -317,9 +314,11 @@ walk(ast: Node, {
 
 ---
 
-The `walk` function provides a way to walk the abstract syntax trees generated by the parser, using the compiler's own built-in instance of [estree-walker](https://github.com/Rich-Harris/estree-walker).
+该 `walk`函数提供一个方法，该方法使用编译器自身的内置[estree-walker](https://github.com/Rich-Harris/estree-walker)实例来遍历解析器生成的抽象语法树。
 
-The walker takes an abstract syntax tree to walk and an object with two optional methods: `enter` and `leave`. For each node, `enter` is called (if present). Then, unless `this.skip()` is called during `enter`, each of the children are traversed, and then `leave` is called on the node.
+
+使用一个抽象语法树walker来遍历时，需传入一个带有两种可选方法的对象： `enter` 和 `leave`。其中`enter`会调用 (被parent包含)每个node。
+除非在调用`enter`期间使用 `this.skip()`来跳过，否则每个node的子级都会被遍历到，继而再在node中调用`leave`。
 
 
 ```js
@@ -342,7 +341,7 @@ svelte.walk(ast, {
 
 ---
 
-The current version, as set in package.json.
+请在package.json中设置以获得当前版本。
 
 ```js
 const svelte = require('svelte/compiler');

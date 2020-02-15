@@ -27,7 +27,7 @@
 </style>
 
 <svelte:head>
-	<title>Svelte • 首页</title>
+	<title>Svelte • Cybernetically enhanced web apps.</title>
 
 	<meta name="twitter:title" content="Svelte">
 	<meta name="twitter:description" content="Cybernetically enhanced web apps">
@@ -58,7 +58,7 @@
 
 	<a href="blog/svelte-3-rethinking-reactivity" slot="three">
 		<h2>真正的实时反应</h2>
-		<p>不需要大良的状态管理库 — Svelte 为 JavaScript 自身赋予反应性。</p>
+		<p>Svelte 为 JavaScript 自身赋予反应性，从而抛弃大量的状态管理库。</p>
 
 		<span class="learn-more">了解更多</span>
 	</a>
@@ -66,7 +66,7 @@
 	<div class="description" slot="what">
 		<p>Svelte 是一种构建用户界面的选择。传统的框架（诸如 React 和 Vue）在 <em>浏览器中</em>完成大部分工作，而  Svelte 则将这步骤放在 <em>编译阶段</em> 且这是在你构建程序时发生的。</p>
 
-		<p>Svelte 不会使用虚拟 DOM 技术，但会在你编写 App 阶段，通过实时编译的方式更新DOM代码，进而做到“边编译，边运行”。</p>
+		<p>Svelte 不使用virtual DOM 技术，但会在你编写代码时，通过实时编译的方式更新DOM代码，进而做到“边编译，边运行”。</p>
 
 		<p><a href="blog/svelte-3-rethinking-reactivity">阅读更多</a>介绍性博客和文章 </p>
 	</div>

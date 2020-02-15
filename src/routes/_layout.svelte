@@ -43,14 +43,15 @@
 		<NavItem segment="repl">REPL</NavItem>
 		<NavItem segment="blog">博客</NavItem>
 		<NavItem segment="faq">常见问题</NavItem>
-
+		
+		<NavItem external="https://github.com/Runningzs/svelte-ZH/issues">报告翻译错误</NavItem>
 		<NavItem external="https://sapper.svelte.dev">Sapper</NavItem>
 
-		<NavItem external="chat" title="Discord Chat">
+		<NavItem external="chat" title="svelteJS交流群">
 			<Icon name="message-square"/>
 		</NavItem>
 
-		<NavItem external="https://github.com/sveltejs/svelte" title="GitHub Repo">
+		<NavItem external="https://github.com/Runningzs/svelte-ZH" title="GitHub Repo">
 			<Icon name="github"/>
 		</NavItem>
 	</Nav>

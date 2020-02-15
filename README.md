@@ -41,7 +41,7 @@ npm run update
 
 - [x] index
 - [x] tutorial 
-- [ ] API docs
+- [x] API docs
 
 ## 构建该站点
 

@@ -2,9 +2,9 @@
 title: setContext 和 getContext
 ---
 
-该 context API 提供了一种机制，使组件之间可以“交谈”，而无需将数据和函数作为props属性传递，或进行大量的事件调度，这是一项复杂的功能，但很有用。
+该 context API 提供了一种机制，使组件之间可以“互相通信”，而无需将数据和函数作为props属性传递，或进行大量的事件调度，这是一项复杂的功能，但很有用。
 
-[js执行过程之上下文对象(Context)](https://juejin.im/post/5c35de4ef265da61776c2961)
+[Context](https://juejin.im/post/5c35de4ef265da61776c2961)
 
 以使用 [Mapbox GL](https://docs.mapbox.com/mapbox-gl-js/overview/) 地图为例。 我想使用 `<MapMarker>` 组件来显示标记，但不希望在每个组件上都将对底层Mapbox实例的引用作为一个props属性来传递。
 
